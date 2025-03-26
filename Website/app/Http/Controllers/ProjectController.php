@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Http\Controllers\Controller;
+use Iluminate\Support\Facades\Storage;
+use App\Models\Image;
 use App\Models\Technology;
 use Illuminate\Http\Request;
 
@@ -25,7 +28,7 @@ class ProjectController extends Controller
     public function create()
     {
         $technologies = Technology::all();  // Haal alle technologieën op
-        return view('projects.create', compact('technologies'));
+        return view('create_project', compact('technologies'));
     }
 
     public function dashboard()
@@ -34,9 +37,9 @@ class ProjectController extends Controller
         return view('dashboard', compact('projects'));
     }
 
-    // Sla het nieuwe project op
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+
+
         $request->validate([
             'title' => 'required|string|max:255',
             'introduction' => 'required|string',
@@ -44,30 +47,48 @@ class ProjectController extends Controller
             'url' => 'nullable|url',
             'github' => 'nullable|url',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'technologies' => 'nullable|array', // Zorg ervoor dat dit als array wordt gevalideerd
+            'technologies.*' => 'string|max:50',
         ]);
 
-        // Maak een nieuw project aan en vul de gegevens in
-        $project = new Project();
-        $project->title = $request->title;
-        $project->introduction = $request->introduction;
-        $project->body = $request->body;
-        $project->url = $request->url;
-        $project->github = $request->github;
-        $project->user_id = auth()->id(); // Voeg de gebruiker toe aan het project
+        // Maak een nieuw project
+        $project = Project::create([
+            'title' => $request->title,
+            'introduction' => $request->introduction,
+            'body' => $request->body,
+            'url' => $request->url,
+            'github' => $request->github,
+            'technologies' => $request  ->technologies,
+            'user_id' => auth()->id(),
+        ]);
 
-        // Verwerk de thumbnail afbeelding als er een bestand is geüpload
-        if ($request->hasFile('thumbnail')) {
-            $project->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
+        if ($request->hasFile('thumbnail')){
+            $thumbnailFile = $request->file('thumbnail');
+            $thumbnailPath = $thumbnailFile->storeAs("projects/{$project->id}", $thumbnailFile->getClientOriginalName(), 'public');
+            $project->update(['thumbnail' => $thumbnailPath]);
         }
 
-        // Sla het project op
-        $project->save();
+        if ($request->hasFile('images')){
+            foreach( $request->file('images') as $imageFile) {
+                $imagePath = $imageFile->storeAs("projects/{$project->id}", $imageFile->getClientOriginalName(), 'public');
 
-        // Voeg de technologieën toe aan het project
-        $project->technologies()->sync($request->technologies);
+                Image::create([
+                    'path' => $imagePath,
+                    'project_id' => $project->id,
+                ]);
+            }
+        }
+        // Koppel de technologieën aan het project
+        if ($request->has('technologies')) {
+            $technologyIds = Technology::whereIn('name', $request->technologies)->pluck('id')->toArray();
+            $project->technologies()->sync($technologyIds);
+        }
 
         return redirect()->route('dashboard')->with('success', 'Project succesvol toegevoegd!');
     }
+
+
 
     // Toon het formulier om een project te bewerken
     public function edit(Project $project)
@@ -78,29 +99,37 @@ class ProjectController extends Controller
 
     // Werk het project bij
     public function update(Request $request, Project $project)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'introduction' => 'required|string',
-            'body' => 'required|string',
-            'url' => 'nullable|url',
-            'github' => 'nullable|url',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'introduction' => 'required|string',
+        'body' => 'required|string',
+        'url' => 'nullable|url',
+        'github' => 'nullable|url',
+        'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'technologies' => 'nullable|array',
+        'technologies.*' => 'exists:technologies,id',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
 
-        $data = $request->all();
+    // Update projectgegevens
+    $project->update($request->only(['title', 'introduction', 'body', 'url', 'github']));
 
-        // Verwerk de thumbnail afbeelding
-        if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
-
-        // Werk het project bij
-        $project->update($data);
-        $project->technologies()->sync($request->technologies);  // Werk technologieën bij
-
-        return redirect()->route('projects.index')->with('success', 'Project succesvol bijgewerkt!');
+    // Verwerk de thumbnail afbeelding als er een bestand is geüpload
+    if ($request->hasFile('thumbnail')) {
+        $project->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
+        $project->save();
     }
+
+    // Update technologieën
+    if ($request->has('technologies')) {
+        $technologyIds = Technology::whereIn('name', $request->technologies)->pluck('id')->toArray();
+        $project->technologies()->sync($technologyIds);
+    }
+
+    return redirect()->route('projects.index')->with('success', 'Project succesvol bijgewerkt!');
+}
+
 
     // Verwijder een project
     public function destroy(Project $project)
