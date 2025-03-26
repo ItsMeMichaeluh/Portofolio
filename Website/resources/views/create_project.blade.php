@@ -63,17 +63,32 @@
                     </div>
 
                     <!-- Technologieën -->
-                    <div>
-                        <label class="block text-2xl font-bold">Technologieën</label>
-                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            @foreach (['Laravel', 'React', 'TailwindCSS', 'WordPress', 'PHP', 'JavaScript', 'Vite', 'CSS', 'XAMPP', 'Docker', 'MySQL'] as $tech)
-                                <label class="flex items-center gap-3 p-4 bg-gray-800 border-2 border-red-500 rounded-lg cursor-pointer hover:bg-red-700 transition-all ">
-                                    <input type="checkbox" name="technologies[]" value="{{ $tech }}" class="w-6 h-6 accent-yellow-500  focus:border-transparent">
-                                    <span class="text-white font-medium">{{ $tech }}</span>
+                    <div class="mb-6">
+                        <label class="block text-lg font-semibold text-gray-700">Kies Technologieën</label>
+                        <div class="mt-2 grid grid-cols-2 md:grid-cols-3 gap-3">
+                            @foreach($technologies as $technology)
+                                <label class="flex items-center bg-white p-3 rounded-lg shadow-lg border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-all">
+                                    <input
+                                        type="checkbox"
+                                        name="technologies[]"
+                                        value="{{ $technology->id }}"
+                                        class="hidden peer"
+                                        @if(isset($project) && $project->technologies->contains($technology->id)) checked @endif
+                                    >
+                                    <div class="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center peer-checked:bg-indigo-600 peer-checked:border-indigo-600 transition-all">
+                                        <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="ml-3 text-gray-800 font-semibold">{{ $technology->name }}</span>
                                 </label>
                             @endforeach
                         </div>
                     </div>
+
+
+
+
 
                     <!-- Submit Button -->
                     <div class="mt-8 text-center">

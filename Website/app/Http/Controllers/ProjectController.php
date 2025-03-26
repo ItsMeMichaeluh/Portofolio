@@ -81,7 +81,8 @@ class ProjectController extends Controller
         }
         // Koppel de technologieën aan het project
         if ($request->has('technologies')) {
-            $technologyIds = Technology::whereIn('name', $request->technologies)->pluck('id')->toArray();
+            $technologyIds = $request->technologies; // De geselecteerde IDs direct opslaan
+            $project->technologies()->sync($technologyIds);
             $project->technologies()->sync($technologyIds);
         }
 
@@ -94,12 +95,15 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $technologies = Technology::all();  // Haal alle technologieën op
-        return view('projects.edit', compact('project', 'technologies'));
+        return view('projects.update', compact('project', 'technologies'));
     }
 
     // Werk het project bij
-    public function update(Request $request, Project $project)
-{
+    public function update(Request $request, Project $project){
+
+        $technologies = Technology::all();  // Haal alle technologieën op
+        return view('projects.edit', compact('project', 'technologies'));
+
     $request->validate([
         'title' => 'required|string|max:255',
         'introduction' => 'required|string',
