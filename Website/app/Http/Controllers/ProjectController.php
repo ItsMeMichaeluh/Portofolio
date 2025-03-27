@@ -21,14 +21,17 @@ class ProjectController extends Controller
     // Toon details van een specifiek project
     public function show(Project $project)
     {
-        return view('projects_show', compact('project'));
+        // Haal alle technologieën en de bijbehorende images op voor dit project
+        $technologies = Technology::all();
+        return view('projects_show', compact('project', 'technologies'));
     }
 
+
     // Toon het formulier om een nieuw project aan te maken
-    public function create()
+    public function create(Project $project)
     {
         $technologies = Technology::all();  // Haal alle technologieën op
-        return view('create_project', compact('technologies'));
+        return view('create_project', compact('technologies', 'project'));
     }
 
     public function dashboard()
@@ -89,56 +92,65 @@ class ProjectController extends Controller
         return redirect()->route('dashboard')->with('success', 'Project succesvol toegevoegd!');
     }
 
-
-
-    // Toon het formulier om een project te bewerken
-    public function edit(Project $project)
-    {
-        $technologies = Technology::all();  // Haal alle technologieën op
-        return view('projects.update', compact('project', 'technologies'));
-    }
-
     // Werk het project bij
-    public function update(Request $request, Project $project){
+    public function update(Request $request, Project $project)
+    {
+        // Valideer de inkomende gegevens
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'introduction' => 'required|string',
+            'body' => 'required|string',
+            'url' => 'nullable|url',
+            'github' => 'nullable|url',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'technologies' => 'nullable|array',
+            'technologies.*' => 'exists:technologies,id',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
 
-        $technologies = Technology::all();  // Haal alle technologieën op
-        return view('projects.edit', compact('project', 'technologies'));
+        // Werk de projectgegevens bij zonder de thumbnail en technologieën
+        $project->update($request->only(['title', 'introduction', 'body', 'url', 'github']));
 
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'introduction' => 'required|string',
-        'body' => 'required|string',
-        'url' => 'nullable|url',
-        'github' => 'nullable|url',
-        'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'technologies' => 'nullable|array',
-        'technologies.*' => 'exists:technologies,id',
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-    ]);
+        // Verwerk de thumbnail afbeelding als deze is geüpload
+        if ($request->hasFile('thumbnail')) {
+            // Verwijder de oude thumbnail als deze bestaat
+            if ($project->thumbnail) {
+                Storage::delete('public/' . $project->thumbnail);
+            }
 
-    // Update projectgegevens
-    $project->update($request->only(['title', 'introduction', 'body', 'url', 'github']));
+            // Sla de nieuwe thumbnail op
+            $project->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
+            $project->save();
+        }
 
-    // Verwerk de thumbnail afbeelding als er een bestand is geüpload
-    if ($request->hasFile('thumbnail')) {
-        $project->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
-        $project->save();
+        // Update de technologieën (indien geselecteerd)
+        if ($request->has('technologies')) {
+            // Zet de geselecteerde technologieën om naar hun ID's
+            $technologyIds = $request->input('technologies');
+            // Sync de technologieën met het project
+            $project->technologies()->sync($technologyIds);
+        }
+
+        // Verwerk de geüploade afbeeldingen (als ze er zijn)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                // Sla de afbeeldingen op
+                $path = $imageFile->store('projects/' . $project->id, 'public');
+                $project->images()->create(['path' => $path]);
+            }
+        }
+
+        // Redirect terug naar de projectpagina (show) met succesbericht
+        return redirect()->route('dashboard', $project->id)->with('success', 'Project succesvol bijgewerkt!');
     }
 
-    // Update technologieën
-    if ($request->has('technologies')) {
-        $technologyIds = Technology::whereIn('name', $request->technologies)->pluck('id')->toArray();
-        $project->technologies()->sync($technologyIds);
-    }
 
-    return redirect()->route('projects.index')->with('success', 'Project succesvol bijgewerkt!');
-}
 
 
     // Verwijder een project
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route('projects.index')->with('success', 'Project succesvol verwijderd!');
+        return redirect()->route('dashboard')->with('success', 'Project succesvol verwijderd!');
     }
 }
