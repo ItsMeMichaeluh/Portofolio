@@ -44,6 +44,21 @@ class ImageUploadController extends Controller
             'project_id' => $projectId,
         ]);
 
+        function deleteImage(Project $project, Image $image)
+        {
+            // Verwijder de afbeelding uit de opslag
+            Storage::delete('public/' . $image->path);
+
+            // Verwijder de afbeelding uit de database
+            $image->delete();
+
+            // Redirect terug naar het project met een succesbericht
+            return redirect()->route('projects.show  ', $project->id)->with('success', 'Afbeelding succesvol verwijderd!');
+        }
+
+
+
+
         return back()->with('success', 'Afbeelding geüpload!');
     }
 }

@@ -60,18 +60,26 @@
                     <label class="block text-lg font-semibold text-gray-700">Voeg Foto's Toe</label>
                     <input type="file" name="images[]" accept="image/*" multiple
                            class="mt-2 p-3 w-full bg-white text-gray-800 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-indigo-500 transition-all shadow-lg">
+
                     <div class="mt-3 flex gap-3 flex-wrap">
                         @foreach($project->images as $image)
                             <div class="relative group">
-                                <img src="{{ asset($image->path) }}" class="w-24 h-24 rounded-lg shadow-md border">
-                                <button type="submit" formaction="{{ route('projects.images.destroy', [$project->id, $image->id]) }}"
-                                        class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
-                                    ❌
-                                </button>
+                                <img src="{{ asset('storage/' . $image->path) }}" class="w-24 h-24 rounded-lg shadow-md border">
+
+                                <!-- Formulier om een afbeelding te verwijderen -->
+                                <form action="{{ route('projects.images.destroy', [$project->id, $image->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
+                                        ❌
+                                    </button>
+                                </form>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
 
                 <!-- URL en GitHub -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -96,10 +104,10 @@
                 </div>
             </form>
 
-            <!-- Verwijderen -->
+
             <form action="{{ route('projects.destroy', $project->id) }}" method="POST" onsubmit="return confirm('Weet je zeker dat je dit project wilt verwijderen?')">
                 @csrf
-                @method('DELETE') <!-- Dit zorgt ervoor dat Laravel de DELETE-methode herkent -->
+                @method('DELETE')
 
                 <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-red-700 transition">
                     Verwijderen 🗑️
