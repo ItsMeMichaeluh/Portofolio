@@ -4,9 +4,6 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
 
 Route::get('/create_project', function () {
     return view('dashboard');
@@ -26,7 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}/images/{image}', [ImageController::class, 'deleteImage'])->name('projects.images.destroy');
     Route::post('/projects/{project}/images', [ImageController::class, 'upload'])->name('projects.images.store');
-
 });
+
+Route::get('/over', function () {
+    return view('index.over');
+})->middleware(['auth', 'verified'])->name('over');
 
 require __DIR__.'/auth.php';
