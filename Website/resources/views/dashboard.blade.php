@@ -17,6 +17,35 @@
         </style>
     </head>
     <body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center p-6">
+
+        <div class="container mx-auto px-6 py-16">
+            <h1 class="text-3xl font-bold text-white mb-6">Dashboard</h1>
+
+            <!-- E-mail Overzicht (FIRE layout) -->
+            <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold text-white mb-4">Gestuurde E-mails</h2>
+
+                @if($sentEmails->isEmpty())
+                    <p class="text-gray-400">Er zijn nog geen e-mails verzonden.</p>
+                @else
+                    <div class="space-y-6">
+                        @foreach($sentEmails as $email)
+                            <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-white font-semibold">{{ $email->name }}</h3>
+                                    <span class="text-sm text-gray-400">{{ $email->created_at->diffForHumans() }}</span>
+                                </div>
+                                <p class="text-gray-300 mt-2">{{ Str::limit($email->message, 100) }}</p>
+                                <div class="mt-4">
+                                    <p class="text-sm text-gray-400">E-mail: <a href="mailto:{{ $email->email }}" class="text-indigo-500 hover:underline">{{ $email->email }}</a></p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
+        
         <div class="max-w-screen w-full bg-gray-950 p-8 rounded-2xl shadow-2xl">
             <h1 class="text-4xl font-extrabold text-orange-500 text-center mb-8 uppercase">🔥 Projecten Overzicht 🔥</h1>
 

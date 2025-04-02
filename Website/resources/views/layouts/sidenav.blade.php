@@ -11,7 +11,7 @@
 <body class="bg-gray-900 text-white">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-1/5 bg-black text-gray-200 flex flex-col justify-between p-6 border-r border-gray-700 relative">
+        <aside class="w-1/5 bg-black text-gray-200 flex flex-col justify-between p-6 border-r border-gray-700 fixed top-0 left-0 h-screen">
             <div>
                 <div href="index" class="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-purple-500 to-orange-500"></div>
                 <a href="{{ route('index') }}" class="text-3xl font-bold tracking-wider">
@@ -43,7 +43,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 flex items-center justify-center relative">
+        <main class="flex-1 flex items-center justify-center relative ml-[20%]">
             @yield('content')
         </main>
     </div>

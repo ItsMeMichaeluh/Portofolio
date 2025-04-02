@@ -8,9 +8,11 @@ use Iluminate\Support\Facades\Storage;
 use App\Models\Image;
 use App\Models\Technology;
 use Illuminate\Http\Request;
+use App\Models\SentEmail;
 
 class ProjectController extends Controller
 {
+
     // Haal alle projecten op
     public function index()
     {
@@ -37,8 +39,9 @@ class ProjectController extends Controller
 
     public function dashboard()
     {
+        $sentEmails = SentEmail::latest()->get();
         $projects = Project::where('user_id', auth()->id())->latest()->get();
-        return view('dashboard', compact('projects'));
+        return view('dashboard', compact('projects', 'sentEmails'));
     }
 
     public function store(Request $request) {

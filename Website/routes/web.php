@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
+use App\Models\SentEmail;
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/create_project', [ProjectController::class, 'create'])->name('create_project');
@@ -18,7 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}/images/{image}', [ImageController::class, 'deleteImage'])->name('projects.images.destroy');
     Route::post('/projects/{project}/images', [ImageController::class, 'upload'])->name('projects.images.store');
-
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 });
 
 Route::get('/school', [ProjectController::class, 'index'])->name('school');
