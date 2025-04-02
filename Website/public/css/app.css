@@ -12,9 +12,10 @@
   }
 
   body {
-    display: grid;
     min-height: 100vh;
     background: hsl(0 0% 6%);
+    position: relative; /* Zorg ervoor dat de inhoud boven de achtergrond komt */
+    z-index: 1;
   }
 
   .el {
@@ -26,7 +27,16 @@
       url("https://assets.codepen.io/605876/noise-mask.png") 256px 50% / 256px 256px;
     mask-composite: intersect;
     animation: flicker 20s infinite linear;
+    position: fixed;  /* Zorg ervoor dat de achtergrond vast blijft staan */
+    top: 0;  /* Zorg ervoor dat de achtergrond bovenaan begint */
+    left: 0;  /* Zorg ervoor dat de achtergrond helemaal links begint */
+    z-index: -1;
   }
+
+  .container {
+    position: relative; /* Zorg ervoor dat de inhoud zich goed aanpast boven de achtergrond */
+    z-index: 2; /* De inhoud moet boven de achtergrond komen */
+}
 
   @keyframes flicker {
     to {

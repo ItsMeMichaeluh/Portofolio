@@ -14,8 +14,9 @@ class ProjectController extends Controller
     // Haal alle projecten op
     public function index()
     {
+        $technologies = Technology::all();
         $projects = Project::all();
-        return view('projects.index', compact('projects'));
+        return view('index.school', compact('projects','technologies'));
     }
 
     // Toon details van een specifiek project
