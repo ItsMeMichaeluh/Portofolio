@@ -13,14 +13,17 @@
         <!-- Sidebar -->
         <aside class="w-1/5 bg-black text-gray-200 flex flex-col justify-between p-6 border-r border-gray-700 relative">
             <div>
-                <div class="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-purple-500 to-orange-500"></div>
-                <h1 class="text-3xl font-bold tracking-wider">MICHIEL KALTEREN</h1>
+                <div href="index" class="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-purple-500 to-orange-500"></div>
+                <a href="{{ route('index') }}" class="text-3xl font-bold tracking-wider">
+                    MICHIEL KALTEREN
+                </a>
                 <p class="text-xl text-gray-400 mt-1">Software Developer</p>
             </div>
+
             <nav class="mt-10 space-y-6">
-                <a href="over" class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">Over mij</a>
-                <a href="school" class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">School</a>
-                <a href="contact" class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">Contact</a>
+                <a href="{{ route('over') }}"class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">Over mij</a>
+                <a href="{{ route('school') }}" class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">School</a>
+                <a href="{{ route('contact') }}" class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">Contact</a>
             </nav>
             <footer class="text-sm text-gray-400 mt-6">
                 <p class="tracking-wide flex space-x-4 justify-center">

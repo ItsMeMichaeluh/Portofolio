@@ -4,10 +4,6 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/create_project', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('create_project');
-
 Route::middleware('auth')->group(function () {
     Route::get('/create_project', [ProjectController::class, 'create'])->name('create_project');
     Route::get('/dashboard', [ProjectController::class, 'dashboard'])->name('dashboard');
@@ -26,14 +22,18 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/over', function () {
     return view('index.over');
-})->middleware(['auth', 'verified'])->name('over');
+})->name('over');
 
 Route::get('/contact', function () {
     return view('index.contact');
-})->middleware(['auth', 'verified'])->name('contact');
+})->name('contact');
 
 Route::get('/school', function () {
     return view('index.school');
-})->middleware(['auth', 'verified'])->name('school');
+})->name('school');
+
+Route::get('/', function () {
+    return view('index.index');
+})->name('index');
 
 require __DIR__.'/auth.php';
