@@ -16,9 +16,18 @@ class ProjectController extends Controller
     // Haal alle projecten op
     public function index()
     {
+        $sentEmails = SentEmail::latest()->get();
         $technologies = Technology::all();
         $projects = Project::all();
-        return view('index.school', compact('projects','technologies'));
+        return view('contact', compact('projects','technologies','sentEmails'));
+    }
+
+    public function school()
+    {
+        $sentEmails = SentEmail::latest()->get();
+        $technologies = Technology::all();
+        $projects = Project::all();
+        return view('index.school', compact('projects','technologies','sentEmails'));
     }
 
     // Toon details van een specifiek project
@@ -89,7 +98,6 @@ class ProjectController extends Controller
         // Koppel de technologieën aan het project
         if ($request->has('technologies')) {
             $technologyIds = $request->technologies; // De geselecteerde IDs direct opslaan
-            $project->technologies()->sync($technologyIds);
             $project->technologies()->sync($technologyIds);
         }
 

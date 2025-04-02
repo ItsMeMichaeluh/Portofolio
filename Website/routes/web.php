@@ -22,10 +22,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/projects/{project}/images/{image}', [ImageController::class, 'deleteImage'])->name('projects.images.destroy');
     Route::post('/projects/{project}/images', [ImageController::class, 'upload'])->name('projects.images.store');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-    Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
+    Route::post('/contact', [ContactController::class, 'send'])->name('contact');
 });
 
-Route::get('/school', [ProjectController::class, 'index'])->name('school');
+Route::get('/school', [ProjectController::class, 'school'])->name('school');
 
 Route::get('/over', function () {
     return view('index.over');
@@ -34,6 +34,10 @@ Route::get('/over', function () {
 Route::get('/contact', function () {
     return view('index.contact');
 })->name('contact');
+
+Route::get('/index', function () {
+    return view('index.index');
+})->name('index');
 
 Route::get('/', function () {
     return view('index.index');

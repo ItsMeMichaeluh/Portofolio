@@ -19,7 +19,7 @@
         <div class="container mx-auto px-6 py-16">
             <h1 class="text-3xl font-bold text-white mb-6">Neem Contact Op</h1>
             <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
-                <form action="{{ route('contact.send') }}" method="POST">
+                <form action="{{ route('contact') }}" method="POST">
                     @csrf
                     <div class="mb-6">
                         <label for="name" class="block text-lg font-semibold text-gray-300">Naam</label>

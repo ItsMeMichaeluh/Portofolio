@@ -6,17 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail; // Hier gaan we een Mail Class voor het bericht maken
 use App\Models\SentEmail;
+use App\Models\Project;
 
 
 class ContactController extends Controller
 {
-    // We tonen het formulier
-    public function index()
+
+    public function sent()
     {
-        return view('contact');
+        $sentEmails = SentEmail::latest()->get();
+        $projects = Project::where('user_id', auth()->id())->latest()->get();
+        return view('contact', compact('projects', 'sentEmails'));
     }
 
-    // We verwerken het formulier en sturen de e-mail
+
     public function send(Request $request)
     {
         // Validatie van het formulier
@@ -37,6 +40,6 @@ class ContactController extends Controller
         Mail::to('m.kalteren3101@gmail.com')->send(new ContactMail($validated));
 
         // Terug naar de contactpagina met een succesbericht
-        return back()->with('success', 'Bericht verstuurd!');
+        return vieuw('contact')->with('success', 'Bericht verstuurd!');
     }
 }
