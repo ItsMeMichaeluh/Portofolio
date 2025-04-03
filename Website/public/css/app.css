@@ -44,3 +44,41 @@
     }
   }
 /*--------------------------^background*/
+.project-title {
+    position: relative;
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: color 0.3s ease-in-out;
+}
+
+.project-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #9333ea, #f97316);
+    box-shadow: 0 0 8px rgba(147, 51, 234, 0.8);
+    transition: width 0.4s ease-out, left 0.4s ease-out;
+}
+
+.group:hover .project-title::after {
+    width: 100%;
+    left: 0;
+}
+
+.project-thumbnail {
+    transition: transform 0.4s ease-in-out;
+    transform: scale(1.1); /* Begin iets ingezoomd */
+}
+
+.group:hover .project-thumbnail {
+    transform: scale(1); /* Zoom UIT op hover */
+}
+
+
+/*^styling schooldivs mainpage^*/

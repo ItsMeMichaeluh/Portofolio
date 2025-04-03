@@ -17,13 +17,13 @@
 <body>
     <div class="el"></div>
         <div class="container mx-auto px-6 py-16">
-            <h1 class="text-3xl font-bold text-white mb-6">Neem Contact Op</h1>
-            <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-white mb-6">Neem Contact Op<span class="text-purple-500">.</span></h1>
+            <div class="p-8 rounded-lg shadow-lg">
                 <form action="{{ route('contact') }}" method="POST">
                     @csrf
                     <div class="mb-6">
                         <label for="name" class="block text-lg font-semibold text-gray-300">Naam</label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="mt-2 p-3 w-full bg-gray-900 text-white border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-indigo-500 transition-all shadow-lg @error('name') border-red-500 @enderror">
+                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="mt-2 p-3 w-full bg-white-900 text-black border-2 border-purple-300 rounded-lg focus:ring-4 focus:ring-purple-500 transition-all shadow-lg @error('name') border-red-500 @enderror">
                         @error('name')
                             <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                         @enderror
@@ -31,7 +31,7 @@
 
                     <div class="mb-6">
                         <label for="email" class="block text-lg font-semibold text-gray-300">E-mail</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="mt-2 p-3 w-full bg-gray-900 text-white border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-indigo-500 transition-all shadow-lg @error('email') border-red-500 @enderror">
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="mt-2 p-3 w-full bg-white-900 text-black border-2 border-purple-300 rounded-lg focus:ring-4 focus:ring-purple-500 transition-all shadow-lg @error('name') border-red-500 @enderror">
                         @error('email')
                             <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                         @enderror
@@ -39,7 +39,7 @@
 
                     <div class="mb-6">
                         <label for="message" class="block text-lg font-semibold text-gray-300">Bericht</label>
-                        <textarea id="message" name="message" rows="4" class="mt-2 p-3 w-full bg-gray-900 text-white border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-indigo-500 transition-all shadow-lg @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
+                        <textarea id="message" name="message" rows="4" class="mt-2 p-3 w-full bg-white-900 text-black border-2 border-purple-300 rounded-lg focus:ring-4 focus:ring-purple-500 transition-all shadow-lg @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
                         @error('message')
                             <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                         @enderror

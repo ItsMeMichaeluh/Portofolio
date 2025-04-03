@@ -12,11 +12,10 @@ use App\Models\Project;
 class ContactController extends Controller
 {
 
-    public function sent()
+    public function index()
     {
         $sentEmails = SentEmail::latest()->get();
-        $projects = Project::where('user_id', auth()->id())->latest()->get();
-        return view('contact', compact('projects', 'sentEmails'));
+        return view('contact', compact('sentEmails'));
     }
 
 
@@ -40,6 +39,6 @@ class ContactController extends Controller
         Mail::to('m.kalteren3101@gmail.com')->send(new ContactMail($validated));
 
         // Terug naar de contactpagina met een succesbericht
-        return vieuw('contact')->with('success', 'Bericht verstuurd!');
+        return redirect()->route('contact')->with('success', 'Je bericht is verzonden!');
     }
 }
