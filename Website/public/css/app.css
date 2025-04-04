@@ -82,3 +82,19 @@
 
 
 /*^styling schooldivs mainpage^*/
+
+
+.animate-on-hover:hover .group-hover\\:animate-shake {
+    animation: shake 0.3s ease-in-out infinite;
+}
+
+.fire-glow {
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fire-glow:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 69, 0, 1);
+}
+/*^voor dashboard^*/

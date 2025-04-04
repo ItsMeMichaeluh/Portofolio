@@ -18,6 +18,14 @@ class ContactController extends Controller
         return view('contact', compact('sentEmails'));
     }
 
+    public function destroy($id){
+    $email = SentEmail::findOrFail($id);
+    $email->delete();
+
+    return redirect()->back()->with('success', 'E-mail verwijderd.');
+    }
+
+
 
     public function send(Request $request)
     {
@@ -34,9 +42,6 @@ class ContactController extends Controller
         'email' => $validated['email'],
         'message' => $validated['message'],
     ]);
-
-        // Verzenden van het e-mailbericht
-        Mail::to('m.kalteren3101@gmail.com')->send(new ContactMail($validated));
 
         // Terug naar de contactpagina met een succesbericht
         return redirect()->route('contact')->with('success', 'Je bericht is verzonden!');

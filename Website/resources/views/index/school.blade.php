@@ -40,7 +40,7 @@
                     <div class="content group absolute w-1/2 {{ $index % 2 == 0 ? 'left-0 pr-6' : 'left-1/2 pl-6' }}"
                     style="top: {{ ($index * 200) }}px;">
                    <h2 class="project-title text-xl text-white mb-4">{{ $project->title }}</h2>
-                   <div class="rounded-lg overflow-hidden">
+                   <div class="rounded-lg border overflow-hidden">
                        <img src="{{ filter_var($project->thumbnail, FILTER_VALIDATE_URL) ? $project->thumbnail : asset('storage/' . $project->thumbnail) }}"
                             alt="{{ $project->title }}"
                             class="project-thumbnail w-full aspect-square md:aspect-[4/3] object-cover">

@@ -5,48 +5,66 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin Panel - Portfolio</title>
         <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-            .fire-glow {
-                box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
-            .fire-glow:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 30px rgba(255, 69, 0, 1);
-            }
-        </style>
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
     </head>
     <body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center p-6">
 
-        <div class="container mx-auto px-6 py-16">
-            <h1 class="text-3xl font-bold text-white mb-6">Dashboard</h1>
+        <div class="container bg-gray-900 text-white mx-auto px-6 py-12">
+            <h1 class="text-4xl font-bold text-white mb-10 flex self-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-lime-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6M4 17h16m-4-4v4m-4-4v4m-4-4v4" />
+                </svg>
+                Inbox
+            </h1>
 
-            <!-- E-mail Overzicht (FIRE layout) -->
-            <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-white mb-4">Gestuurde E-mails</h2>
+            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                @foreach($sentEmails as $email)
+                    <div
+                        x-data="{ open: false }"
+                        @click="open = !open"
+                        class="bg-gray-800 hover:bg-gray-700 transition rounded-xl shadow-md p-6 cursor-pointer relative group overflow-hidden"
+                    >
+                        <!-- Delete knop -->
+                        <form method="POST" action="{{ route('emails.destroy', $email->id) }}" class="absolute top-4 right-4 z-10">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500 hover:text-red-600 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:animate-shake" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </form>
 
-                @if($sentEmails->isEmpty())
-                    <p class="text-gray-400">Er zijn nog geen e-mails verzonden.</p>
-                @else
-                    <div class="space-y-6">
-                        @foreach($sentEmails as $email)
-                            <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
-                                <div class="flex justify-between items-center">
-                                    <h3 class="text-white font-semibold">{{ $email->name }}</h3>
-                                    <span class="text-sm text-gray-400">{{ $email->created_at->diffForHumans() }}</span>
-                                </div>
-                                <p class="text-gray-300 mt-2">{{ Str::limit($email->message, 100) }}</p>
-                                <div class="mt-4">
-                                    <p class="text-sm text-gray-400">E-mail: <a href="mailto:{{ $email->email }}" class="text-indigo-500 hover:underline">{{ $email->email }}</a></p>
-                                </div>
-                            </div>
-                        @endforeach
+
+                        <!-- Inhoud -->
+                        <h2 class="text-lg font-semibold text-white">{{ $email->name }}</h2>
+                        <p class="text-sm text-indigo-400">{{ $email->email }}</p>
+
+                        <!-- Expandable content -->
+                        <div
+                            x-show="open"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 max-h-0"
+                            x-transition:enter-end="opacity-100 max-h-96"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 max-h-96"
+                            x-transition:leave-end="opacity-0 max-h-0"
+                            class="overflow-hidden mt-4 text-gray-300 text-sm"
+                        >
+                            <p class="mb-3">{{ $email->message }}</p>
+                            <span class="text-xs text-gray-500 block">Verzonden {{ $email->created_at->diffForHumans() }}</span>
+                        </div>
                     </div>
-                @endif
+                @endforeach
             </div>
         </div>
-        
-        <div class="max-w-screen w-full bg-gray-950 p-8 rounded-2xl shadow-2xl">
+
+
+
+        <div class="max-w-screen w-full p-8 rounded-2xl shadow-2xl">
             <h1 class="text-4xl font-extrabold text-orange-500 text-center mb-8 uppercase">🔥 Projecten Overzicht 🔥</h1>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
