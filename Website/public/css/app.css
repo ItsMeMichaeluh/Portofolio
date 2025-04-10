@@ -98,3 +98,61 @@
     box-shadow: 0 0 30px rgba(255, 69, 0, 1);
 }
 /*^voor dashboard^*/
+
+.animated-bg {
+    background: linear-gradient(45deg, #0f172a, #1e293b, #334155);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #a855f7;
+    border-radius: 4px;
+}
+
+/* Parallax effect for sections */
+.parallax-section {
+    transform: translateZ(0);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.parallax-section:hover {
+    transform: translateY(-5px);
+}
+
+/* Glowing text effect */
+.glow-text {
+    text-shadow: 0 0 10px #53158d;
+}
+
+/* Custom image gallery */
+.image-gallery::-webkit-scrollbar {
+    height: 6px;
+}
+
+.image-gallery::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.3);
+    border-radius: 10px;
+}
+
+.image-gallery::-webkit-scrollbar-thumb {
+    background: #84cc16;
+    border-radius: 10px;
+}
+
+/*detailproject pagina^^^^*/
