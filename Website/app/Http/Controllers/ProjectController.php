@@ -147,13 +147,18 @@ class ProjectController extends Controller
         return redirect()->route('dashboard', $project->id)->with('success', 'Project succesvol bijgewerkt!');
     }
 
-    public function show($id)
+    public function detail($id)
     {
         $project = Project::with(['technologies', 'images'])->findOrFail($id);
-        return view('projects_show', compact('project'));
+        return view('detail', compact('project'));
     }
 
-
+    public function show(Project $project)
+    {
+        // Haal alle technologieën en de bijbehorende images op voor dit project
+        $technologies = Technology::all();
+        return view('projects_show', compact('project', 'technologies'));
+    }
 
 
 

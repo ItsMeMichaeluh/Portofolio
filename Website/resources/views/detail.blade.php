@@ -1,6 +1,16 @@
-@extends('layouts.app')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
 
-@section('content')
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+
+
+
 <body>
 
     <div class="flex h-screen items-center justify-center relative overflow-hidden">
@@ -13,6 +23,7 @@
         </div>
 
         <div class="absolute inset-0 animated-bg"></div>
+
 
         <!-- Floating geometric shapes for visual interest -->
         <div class="absolute w-64 h-64 rounded-full bg-purple-500/10 blur-3xl -top-20 -left-20"></div>
@@ -30,6 +41,10 @@
                 {{ $project->introduction }}
             </p>
         </div>
+
+
+
+
 
         <!-- Fixed scroll indicator positioning -->
         <div class="absolute bottom-10 left-0 right-0 flex justify-center z-20 animate__animated animate__fadeIn animate__delay-2s">
@@ -59,6 +74,7 @@
                         </div>
                     </div>
 
+
                     <div class="w-full md:w-1/4">
                         <div class="sticky top-10">
                             <h2 class="text-2xl font-bold text-purple-400 mb-6 animate__animated animate__fadeIn">Technologies</h2>
@@ -74,6 +90,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Screenshots Gallery -->
         @if ($project->images->count())
@@ -104,8 +121,5 @@
         </div>
         @endif
     </div>
-
 </body>
 </html>
-    @endsection
-
