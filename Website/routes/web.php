@@ -15,7 +15,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('project.destroy');
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
-    Route::get('projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
     Route::get('/projects/{projects}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
@@ -26,6 +25,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
+Route::get('/projecten/{project}', [ProjectController::class, 'detail'])->name('project_details');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact');

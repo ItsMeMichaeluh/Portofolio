@@ -156,7 +156,10 @@ class ProjectController extends Controller
         return redirect()->route('dashboard', $project->id)->with('success', 'Project succesvol bijgewerkt!');
     }
 
-
+    public function detail(Project $project)
+    {
+        return view('project_details', compact('project'));
+    }
 
 
     // Verwijder een project
