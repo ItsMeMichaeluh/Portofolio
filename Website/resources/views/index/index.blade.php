@@ -18,7 +18,7 @@
 <body class="bg-gray-900 text-white">
     <div class="el flex h-screen">
     </div>
-
 </body>
 </html>
+
 @endsection
