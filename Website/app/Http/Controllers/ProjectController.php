@@ -30,15 +30,6 @@ class ProjectController extends Controller
         return view('index.school', compact('projects','technologies','sentEmails'));
     }
 
-    // Toon details van een specifiek project
-    public function show(Project $project)
-    {
-        // Haal alle technologieën en de bijbehorende images op voor dit project
-        $technologies = Technology::all();
-        return view('projects_show', compact('project', 'technologies'));
-    }
-
-
     // Toon het formulier om een nieuw project aan te maken
     public function create(Project $project)
     {
@@ -156,10 +147,14 @@ class ProjectController extends Controller
         return redirect()->route('dashboard', $project->id)->with('success', 'Project succesvol bijgewerkt!');
     }
 
-    public function detail(Project $project)
+    public function show($id)
     {
-        return view('project_details', compact('project'));
+        $project = Project::with(['technologies', 'images'])->findOrFail($id);
+        return view('projects_show', compact('project'));
     }
+
+
+
 
 
     // Verwijder een project

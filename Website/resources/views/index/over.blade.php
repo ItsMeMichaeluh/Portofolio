@@ -33,7 +33,7 @@
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             <!-- Linker sectie - afbeelding -->
             <div class="md:col-span-4 flex justify-center">
-                <div class="w-72 h-72 md:w-80 md:h-80 rounded-2xl border overflow-hidden shadow-lg">
+                <div class="w-72 h-72 md:w-80 md:h-80 rounded-2xl  border-2 border-gradient-to-b from-purple-500 to-orange-500 overflow-hidden shadow-lg">
                     <img
                         class="w-full h-full object-cover"
                         src="{{ asset('storage/img/michiel.png') }}"
