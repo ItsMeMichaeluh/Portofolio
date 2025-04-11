@@ -1,192 +1,116 @@
-<<<<<<< HEAD
 <x-app-layout>
 
-        <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg border-2 border-gray-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Project Bewerken</h2>
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg border-2 border-gray-300">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Project Bewerken</h2>
 
-            <!-- Hyperlink naar het project -->
-            <a href="{{ route('projects.show', $project->id) }}"
-               class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition">
-               Bekijk dit project 🔗
-            </a>
+        <!-- Hyperlink naar het project -->
+        <a href="{{ route('projects_show', $project->id) }}"
+           class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition">
+           Bekijk dit project 🔗
+        </a>
 
-            <!-- Formulier voor het bewerken van het project -->
-            <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
-                @csrf
-                @method('PUT')
+        <!-- Formulier voor het bewerken van het project -->
+        <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
+            @csrf
+            @method('PUT')
 
-                <!-- Titel -->
-                <div class="mb-4">
-                    <label class="block text-lg font-semibold text-gray-700">Titel</label>
-                    <input type="text" name="title" value="{{ $project->title }}"
-                           class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">
+            <!-- Titel -->
+            <div class="mb-4">
+                <label class="block text-lg font-semibold text-gray-700">Titel</label>
+                <input type="text" name="title" value="{{ $project->title }}"
+                       class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">
+            </div>
+
+            <!-- Inleiding -->
+            <div class="mb-4">
+                <label class="block text-lg font-semibold text-gray-700">Inleiding</label>
+                <textarea name="introduction" rows="3"
+                          class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">{{ $project->introduction }}</textarea>
+            </div>
+
+            <!-- Beschrijving -->
+            <div class="mb-4">
+                <label class="block text-lg font-semibold text-gray-700">Beschrijving</label>
+                <textarea name="body" rows="5"
+                          class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">{{ $project->body }}</textarea>
+            </div>
+
+            <!-- Technologieën -->
+            <div class="mb-6">
+                <label class="block text-lg font-semibold text-gray-700">Technologieën</label>
+                <div class="mt-2 grid grid-cols-2 md:grid-cols-3 gap-3">
+                    @foreach($technologies as $technology)
+                        <label class="flex items-center bg-white p-3 rounded-lg shadow-lg border-2 border-gray-300 cursor-pointer hover:border-red-500 transition-all">
+                            <input type="checkbox" name="technologies[]" value="{{ $technology->id }}"
+                                   class="hidden peer"
+                                   @if($project->technologies->contains($technology->id)) checked @endif>
+                            <div class="w-5 h-5 border-2 border-gray-400 rounded-md flex items-center justify-center peer-checked:bg-red-600 peer-checked:border-red-600 transition-all">
+                                <svg class="w-4 h-4 text-white hidden peer-checked:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="ml-3 text-gray-800 font-semibold">{{ $technology->name }}</span>
+                        </label>
+                    @endforeach
                 </div>
+            </div>
+                <!-- Afbeeldingen -->
+                <div class="mb-6">
+                    <label class="block text-lg font-semibold text-gray-700">Voeg Foto's Toe</label>
+                    <input type="file" name="images[]" accept="image/*" multiple
+                           class="mt-2 p-3 w-full bg-white text-gray-800 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-indigo-500 transition-all shadow-lg">
 
-                <!-- Inleiding -->
-                <div class="mb-4">
-                    <label class="block text-lg font-semibold text-gray-700">Inleiding</label>
-                    <textarea name="introduction" rows="3"
-                              class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">{{ $project->introduction }}</textarea>
-                </div>
+                    <div class="mt-3 flex gap-3 flex-wrap">
+                        @foreach($project->images as $image)
+                            <div class="relative group">
+                                <img src="{{ asset('storage/' . $image->path) }}" class="w-24 h-24 rounded-lg shadow-md border">
 
-                <!-- Beschrijving -->
-                <div class="mb-4">
-                    <label class="block text-lg font-semibold text-gray-700">Beschrijving</label>
-                    <textarea name="body" rows="5"
-                              class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">{{ $project->body }}</textarea>
-                </div>
-
-    <!-- Fixed scroll indicator positioning -->
-    <div class="absolute bottom-10 left-0 right-0 flex justify-center z-20 animate__animated animate__fadeIn animate__delay-2s">
-        <div class="animate-bounce bg-slate-800/60 p-2 rounded-full shadow-lg">
-            <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>{{ $project->title }} | Portfolio</title>
-</head>
-<body>
-
-@extends('layouts.app')
-
-@section('content')
-
-
-<div class="flex h-screen items-center justify-center relative overflow-hidden">
-    <div class="absolute inset-0 animated-bg"></div>
-
-    <!-- Floating geometric shapes for visual interest -->
-    <div class="absolute w-64 h-64 rounded-full bg-purple-500/10 blur-3xl -top-20 -left-20"></div>
-    <div class="absolute w-80 h-80 rounded-full bg-purple-700/10 blur-3xl -bottom-20 -right-20"></div>
-
-    <!-- Hero content -->
-    <div class="relative z-10 text-center max-w-4xl px-6">
-        <h1 class="text-6xl md:text-7xl font-bold text-white mb-4 glow-text animate__animated animate__fadeInDown">
-            {{ $project->title }}
-        </h1>
-        <div class="flex justify-center mb-8">
-            <div class="h-1 w-32 bg-gradient-to-r from-purple-600 to-orange-500 rounded-full animate__animated animate__fadeIn animate__delay-1s"></div>
->>>>>>> parent of 440d7e0 (Michiel)
-        </div>
-        <p class="text-xl md:text-2xl text-gray-200 font-light animate__animated animate__fadeIn animate__delay-1s leading-relaxed">
-            {{ $project->introduction }}
-        </p>
-    </div>
-</div>
-
-<<<<<<< HEAD
-<div class="animated-bg min-h-screen">
-    <!-- Project Description Section -->
-    <div class="max-w-5xl mx-auto px-6 py-24 relative">
-        <div class="absolute inset-0 bg-black/30 backdrop-blur-lg rounded-3xl"></div>
-
-        <!-- Project Details Card -->
-        <div class="relative z-10 bg-slate-900/60 rounded-2xl p-8 shadow-2xl border border-slate-700/50 parallax-section">
-            <div class="flex flex-col md:flex-row gap-10">
-                <div class="w-full md:w-3/4">
-                    <h2 class="text-2xl font-bold text-purple-400 mb-6 animate__animated animate__fadeIn">Project Details</h2>
-
-=======
-    <!-- Fixed scroll indicator positioning -->
-    <div class="absolute bottom-10 left-0 right-0 flex justify-center z-20 animate__animated animate__fadeIn animate__delay-2s">
-        <div class="animate-bounce bg-slate-800/60 p-2 rounded-full shadow-lg">
-            <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-        </div>
-    </div>
-</div>
-
-<div class="animated-bg min-h-screen">
-    <!-- Project Description Section -->
-    <div class="max-w-5xl mx-auto px-6 py-24 relative">
-        <div class="absolute inset-0 bg-black/30 backdrop-blur-lg rounded-3xl"></div>
-
-        <!-- Project Details Card -->
-        <div class="relative z-10 bg-slate-900/60 rounded-2xl p-8 shadow-2xl border border-slate-700/50 parallax-section">
-            <div class="flex flex-col md:flex-row gap-10">
-                <div class="w-full md:w-3/4">
-                    <h2 class="text-2xl font-bold text-purple-400 mb-6 animate__animated animate__fadeIn">Project Details</h2>
-
->>>>>>> parent of 440d7e0 (Michiel)
-                    <div class="prose prose-lg prose-invert max-w-none mb-10 animate__animated animate__fadeIn animate__delay-1s">
-                        <div class="text-gray-200 leading-relaxed space-y-4">
-                            {!! nl2br(e($project->body)) !!}
-                        </div>
+                                <!-- Formulier om een afbeelding te verwijderen -->
+                                <form action="{{ route('projects.images.destroy', [$project->id, $image->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
+                                        ❌
+                                    </button>
+                                </form>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
 
-                <div class="w-full md:w-1/4">
-                    <div class="sticky top-10">
-                        <h2 class="text-2xl font-bold text-purple-400 mb-6 animate__animated animate__fadeIn">Technologies</h2>
-                        <div class="flex flex-wrap gap-2 animate__animated animate__fadeIn animate__delay-2s">
-                            @foreach($project->technologies as $tech)
-                                <span class="bg-gradient-to-r from-purple-700 to-purple-600 text-white px-4 py-2 rounded-full text-sm transition transform hover:scale-105 hover:from-purple-600 hover:to-purple-500 shadow-lg font-medium">
-                                    {{ $tech->name }}
-                                </span>
-                            @endforeach
-                        </div>
+
+                <!-- URL en GitHub -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-lg font-semibold text-gray-700">Project URL</label>
+                        <input type="url" name="url" value="{{ $project->url }}"
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">
                     </div>
+                    <div>
+                        <label class="block text-lg font-semibold text-gray-700">GitHub Repo</label>
+                        <input type="url" name="github" value="{{ $project->github }} "
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-indigo-500 transition">
+                            </div>
+                        </div>
+
+                        <!-- Opslaan -->
+                        <div class="flex justify-between">
+                            <button type="submit"
+                                    class="bg-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-green-700 transition">
+                                Opslaan ✅
+                            </button>
+                        </div>
+                    </form>
+
+
+                    <form action="{{ route('projects.destroy', $project->id) }}" method="POST" onsubmit="return confirm('Weet je zeker dat je dit project wilt verwijderen?')">
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-red-700 transition">
+                            Verwijderen 🗑️
+                        </button>
+                    </form>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screenshots Gallery -->
-    @if ($project->images->count())
-    <div class="max-w-6xl mx-auto px-6 py-16 relative">
-        <h2 class="text-3xl font-bold text-center text-white mb-12 glow-text animate__animated animate__fadeIn">
-            Project <span class="text-purple-400">Gallery</span>
-        </h2>
-
-        <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-slate-700/50">
-            <div class="flex gap-4 snap-x snap-mandatory overflow-x-auto image-gallery p-6 bg-slate-900/60 backdrop-blur-lg animate__animated animate__fadeIn">
-                @foreach($project->images as $image)
-                    <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 snap-center p-2 transform transition duration-500 hover:scale-[1.02]">
-                        <div class="overflow-hidden rounded-xl shadow-xl border border-slate-700/50 aspect-video">
-                            <img src="{{ asset('storage/' . $image->path) }}" alt="Screenshot"
-                                 class="w-full h-full object-cover object-center transition duration-700 hover:scale-110">
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- Navigation indicators -->
-            <div class="flex justify-center mt-6 mb-2 gap-2">
-                @foreach($project->images as $index => $image)
-                    <button class="w-3 h-3 rounded-full bg-purple-500/50 hover:bg-purple-400 transition"></button>
-                @endforeach
-            </div>
-        </div>
-    </div>
-    @endif
-
-</div>
-
-@endsection
-
-<!-- Custom JavaScript for enhanced interactions -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Subtle parallax scrolling effect
-        window.addEventListener('scroll', function() {
-            const scrollPosition = window.scrollY;
-            document.querySelectorAll('.parallax-section').forEach(element => {
-                const speed = 0.05;
-                element.style.transform = `translateY(${scrollPosition * speed}px)`;
-            });
-        });
-    });
-</script>
-
-</body>
-</html>
+            </x-app-layout>
