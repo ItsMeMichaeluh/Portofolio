@@ -24,6 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/emails/{id}', [ContactController::class, 'destroy'])->name('emails.destroy');
 
 });
+<<<<<<< HEAD
+=======
+Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+
+>>>>>>> parent of 440d7e0 (Michiel)
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact');
