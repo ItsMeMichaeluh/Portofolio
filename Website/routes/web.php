@@ -27,7 +27,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
 
-
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact');
 
