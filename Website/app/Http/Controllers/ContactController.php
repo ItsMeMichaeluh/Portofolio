@@ -18,7 +18,7 @@ class ContactController extends Controller
         return view('contact', compact('sentEmails'));
     }
 
-    public function destroy($id){
+    public function destroyMail($id){
     $email = SentEmail::findOrFail($id);
     $email->delete();
 

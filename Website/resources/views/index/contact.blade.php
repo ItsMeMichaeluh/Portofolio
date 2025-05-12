@@ -17,7 +17,7 @@
 <body>
     <div class="el"></div>
         <div class="container mx-auto px-6 py-16">
-            <h1 class="text-3xl font-bold text-white mb-6">Neem Contact Op<span class="text-purple-500">.</span></h1>
+            <h1 class="text-5xl font-bold text-white mb-6">Neem contact op<span class="text-purple-500">.</span></h1>
             <div class="p-8 rounded-lg shadow-lg">
                 <form action="{{ route('contact') }}" method="POST">
                     @csrf

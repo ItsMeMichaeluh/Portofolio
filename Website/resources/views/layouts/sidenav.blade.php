@@ -12,19 +12,45 @@
     <div class="flex h-screen">
         <!-- Sidebar -->
         <aside class="w-1/5 bg-black text-gray-200 flex flex-col justify-between p-6 border-r border-gray-700 fixed top-0 left-0 h-screen">
-            <div>
-                <div href="index" class="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-purple-500 to-orange-500"></div>
-                <a href="{{ route('index') }}" class="text-3xl font-bold tracking-wider">
-                    MICHIEL KALTEREN
-                </a>
-                <p class="text-xl text-gray-400 mt-1">Software Developer</p>
-            </div>
+            <div class="bg-gray-900 text-white p-2">
+                <!-- Gradient side bar -->
+                <div class="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-purple-600 to-orange-500"></div>
 
-            <nav class="mt-10 space-y-6">
-                <a href="{{ route('over') }}"class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">Over mij</a>
-                <a href="{{ route('school') }}" class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">School</a>
-                <a href="{{ route('contact') }}" class="block text-2xl font-semibold hover:text-white hover:bg-gray-800 p-2 rounded-lg transition">Contact</a>
-            </nav>
+                <!-- Name -->
+            <a href="index">
+                <h2 class="text-5xl font-extrabold tracking-wide text-center font-playfair">
+                  <span class="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent transition-all duration-300 hover:tracking-wider">
+                    MICHIEL
+                  </span>
+                  <span class="ml-2 text-transparent stroke-white stroke-[1.5px] hover:stroke-orange-500 transition-all duration-300">
+                    KALTEREN
+                  </span>
+                </h2>
+            </a>
+                <!-- Subtitle -->
+                <p class="text-gray-400 text-lg text-center mt-2 tracking-wide italic">Creative Developer</p>
+              </div>
+
+
+              <nav class="space-y-4 text-left">
+                <a href="{{ route('over') }}"
+                   class="block text-3xl font-extrabold font-playfair tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-orange-500 transition-all duration-300 hover:translate-x-3 hover:brightness-125">
+                  Over mij
+                </a>
+                <a href="{{ route('school') }}"
+                   class="block text-3xl font-extrabold font-playfair tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-orange-500 transition-all duration-300 hover:translate-x-3 hover:brightness-125">
+                  School
+                </a>
+                <a href="{{ route('contact') }}"
+                   class="block text-3xl font-extrabold font-playfair tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-orange-500 transition-all duration-300 hover:translate-x-3 hover:brightness-125">
+                  Contact
+                </a>
+              </nav>
+
+
+
+
+
             <footer class="text-sm text-gray-400 mt-6">
                 <p class="tracking-wide flex space-x-4 justify-center">
                     <a href="contact"
@@ -43,7 +69,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 flex items-center justify-center relative ml-[20%]">
+        <main class="flex-1 flex justify-center relative ml-[20%]">
             @yield('content')
         </main>
     </div>

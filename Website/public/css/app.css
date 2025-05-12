@@ -18,6 +18,10 @@
     z-index: 1;
   }
 
+  h1{
+    padding-top:6rem;
+  }
+
   .el {
     background: conic-gradient(from 180deg at 50% 70%,hsla(0,0%,98%,1) 0deg,#eec32d 72.0000010728836deg,#ec4b4b 144.0000021457672deg,#709ab9 216.00000858306885deg,#4dffbf 288.0000042915344deg,hsla(0,0%,98%,1) 1turn);
     width: 100%;
@@ -79,6 +83,21 @@
 .group:hover .project-thumbnail {
     transform: scale(1); /* Zoom UIT op hover */
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+@layer utilities {
+  .stroke-white {
+    -webkit-text-stroke: 1.2px white;
+  }
+  .stroke-orange-500 {
+    -webkit-text-stroke: 1.2px #f97316;
+  }
+}
+
+
+
 
 
 /*^styling schooldivs mainpage^*/
