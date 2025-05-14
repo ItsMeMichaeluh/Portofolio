@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Models\SentEmail;
+use App\Http\Controllers\ImageController;
 
 
 Route::middleware('auth')->group(function () {
@@ -20,8 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}/images/{image}', [ImageController::class, 'deleteImage'])->name('projects.images.destroy');
-    Route::post('/projects/{project}/images', [ImageController::class, 'upload'])->name('projects.images.store');
-    Route::delete('/emails/{id}', [ContactController::class, 'destroy'])->name('emails.destroy');
+    Route::post('/projects/{project}/images', [ImageController::class, 'imageUpload'])->name('projects.images.store');
+    Route::delete('/emails/{id}', [ContactController::class, 'imageDestroy'])->name('emails.destroy');
 
 });
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');

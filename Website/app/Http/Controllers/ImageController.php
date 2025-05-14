@@ -2,63 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Project;
-use App\Models\Image;
 
-
-
-class ImageUploadController extends Controller
+class ImageController extends Controller
 {
-    public function upload(Request $request, $projectId) {
+    /**
+     * Sla geüploade afbeeldingen op voor een specifiek project.
+     */
+    public function imageUpload(Request $request, Project $project)
+    {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
-        $project = Project::find($projectId);
-        if (!$project) {
-            return back()->with('error', 'Project niet gevonden!');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $path = $imageFile->store("projects/{$project->id}", 'public');
+
+                $project->images()->create([
+                    'path' => $path,
+                ]);
+            }
+
+            return back()->with('success', 'Afbeelding(en) succesvol geüpload!');
         }
 
-        $imageFile = $request->file('image');
+        return back()->with('error', 'Geen afbeeldingen gevonden om te uploaden.');
+    }
 
-        $fileName = time() . '.' . $imageFile->getClientOriginalExtension();
-
-
-        if (!$imageFile->isValid()) {
-            dd("Bestand is ongeldig, Laravel kan het niet verwerken.");
+    /**
+     * Verwijder een specifieke afbeelding van een project.
+     */
+    public function deleteImage(Project $project, Image $image)
+    {
+        // Check of de afbeelding echt bij het project hoort
+        if ($image->project_id !== $project->id) {
+            return back()->with('error', 'Afbeelding hoort niet bij dit project.');
         }
 
+        // Verwijder het bestand van de opslag
+        Storage::disk('public')->delete($image->path);
 
-        $path = Storage::disk('public')->putFileAs(
-            "projects/{$projectId}",
-            $imageFile,
-            $fileName
-        );
+        // Verwijder de record uit de database
+        $image->delete();
 
-        $dbPath = str_replace("public/", "", $path);
-
-        Image::create([
-            'path' => $dbPath,
-            'project_id' => $projectId,
-        ]);
-
-        function deleteImage(Project $project, Image $image)
-        {
-            // Verwijder de afbeelding uit de opslag
-            Storage::delete('public/' . $image->path);
-
-            // Verwijder de afbeelding uit de database
-            $image->delete();
-
-            // Redirect terug naar het project met een succesbericht
-            return redirect()->route('projects.show  ', $project->id)->with('success', 'Afbeelding succesvol verwijderd!');
-        }
-
-
-
-
-        return back()->with('success', 'Afbeelding geüpload!');
+        return back()->with('success', 'Afbeelding succesvol verwijderd!');
     }
 }
