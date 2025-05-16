@@ -20,28 +20,28 @@
                 Inbox
             </h1>
 
-            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div class="flex flex-col items-center gap-6">
                 @foreach($sentEmails as $email)
-                    <div
-                        x-data="{ open: false }"
-                        @click="open = !open"
-                        class="bg-gray-800 hover:bg-gray-700 transition rounded-xl shadow-md p-6 cursor-pointer relative group overflow-hidden"
-                    >
-                        <!-- Delete knop -->
-                        <form method="POST" action="{{ route('emails.destroy', $email->id) }}" class="absolute top-4 right-4 z-10">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-600 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:animate-shake" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
-                        </form>
+                    <div x-data="{ open: false }" class="w-[85%] bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                        <!-- Header -->
+                        <div @click="open = !open"
+                            class="flex justify-between items-center cursor-pointer p-6 hover:bg-gray-700 transition">
+                            <div>
+                                <h2 class="text-xl font-semibold text-white">{{ $email->name }}</h2>
+                                <p class="text-sm text-indigo-400">{{ $email->email }}</p>
+                            </div>
 
-
-                        <!-- Inhoud -->
-                        <h2 class="text-lg font-semibold text-white">{{ $email->name }}</h2>
-                        <p class="text-sm text-indigo-400">{{ $email->email }}</p>
+                            <!-- Delete button -->
+                            <form method="POST" action="{{ route('emails.destroy', $email->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-600 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:animate-shake" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
 
                         <!-- Expandable content -->
                         <div
@@ -52,7 +52,7 @@
                             x-transition:leave="transition ease-in duration-200"
                             x-transition:leave-start="opacity-100 max-h-96"
                             x-transition:leave-end="opacity-0 max-h-0"
-                            class="overflow-hidden mt-4 text-gray-300 text-sm"
+                            class="overflow-hidden px-6 pb-6 text-gray-300 text-sm"
                         >
                             <p class="mb-3">{{ $email->message }}</p>
                             <span class="text-xs text-gray-500 block">Verzonden {{ $email->created_at->diffForHumans() }}</span>
@@ -72,7 +72,8 @@
                     <div class="bg-gray-900 p-6 rounded-lg shadow-lg fire-glow relative ">
                         <a href="{{ route('projects.show', $project->id) }}" class="block h-full relative border-2 flex flex-col overflow-hidden rounded-lg">
                             <!-- Image -->
-                            <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}" class="w-full h-[250px] object-cover rounded-md mb-4 transition-transform duration-500 ease-in-out transform hover:scale-105">
+                            <img src="{{ asset('storage/' . $project->thumbnail) }}?v={{ time() }}" alt="{{ $project->title }}" class="w-full h-[250px] object-cover rounded-md mb-4 transition-transform duration-500 ease-in-out transform hover:scale-105">
+
 
                             <!-- Title -->
                             <h3 class="text-2xl font-bold text-white bg-gradient-to-r from-orange-400 via-red-500 to-yellow-300 p-2 absolute bottom-0 w-full text-center">{{

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Http\Controllers\Controller;
-use Iluminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Image;
 use App\Models\Technology;
 use Illuminate\Http\Request;
@@ -126,8 +126,8 @@ class ProjectController extends Controller
         // Verwerk de thumbnail afbeelding als deze is geüpload
         if ($request->hasFile('thumbnail')) {
             // Verwijder de oude thumbnail als deze bestaat
-            if ($project->thumbnail) {
-                Storage::delete('public/' . $project->thumbnail);
+            if ($project->thumbnail && Storage::disk('public')->exists($project->thumbnail)) {
+                Storage::disk('public')->delete($project->thumbnail);
             }
 
             // Sla de nieuwe thumbnail op

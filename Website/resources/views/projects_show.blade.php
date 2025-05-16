@@ -7,7 +7,6 @@
            Bekijk dit project 🔗
         </a>
 
-        <!-- ✅ ENIGE FORM VOOR PROJECT UPDATE -->
         <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data" class="mb-10">
             @csrf
             @method('PUT')
