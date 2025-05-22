@@ -42,18 +42,6 @@
                 </div>
             </div>
 
-            <!-- URL en GitHub -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                    <label class="block text-lg font-semibold text-gray-700">Project URL</label>
-                    <input type="url" name="url" value="{{ $project->url }}" class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm">
-                </div>
-                <div>
-                    <label class="block text-lg font-semibold text-gray-700">GitHub Repo</label>
-                    <input type="url" name="github" value="{{ $project->github }}" class="w-full p-3 border-2 border-gray-300 rounded-lg shadow-sm">
-                </div>
-            </div>
-
             <!-- ✅ Opslaanknop hoort HIER! -->
             <div class="flex justify-between">
                 <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-green-700 transition">
@@ -62,7 +50,6 @@
             </div>
         </form>
 
-        <!-- 📸 APARTE FORM voor Afbeeldingen Uploaden -->
 
         <form action="{{ route('projects.images.store', $project->id) }}" method="POST" enctype="multipart/form-data">
             @csrf

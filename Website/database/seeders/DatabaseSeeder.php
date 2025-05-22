@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         $technologies = [
             'Laravel',
             'React',
-            'TailwindCSS',  
+            'TailwindCSS',
             'WordPress',
             'PHP',
             'JavaScript',

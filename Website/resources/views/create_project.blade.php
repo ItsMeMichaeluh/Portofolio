@@ -53,15 +53,6 @@
                         </div>
                     </div>
 
-                    <!-- Featured -->
-                    <div>
-                        <label for="featured" class="block text-2xl font-bold">Is dit project uitgelicht?</label>
-                        <select id="featured" name="featured" class="mt-2 p-4 w-full border-2 border-yellow-500 bg-gray-800 text-white rounded-lg shadow-lg focus:ring-4 focus:ring-red-500  focus:border-transparent">
-                            <option value="1" {{ old('featured') == '1' ? 'selected' : '' }}>Ja</option>
-                            <option value="0" {{ old('featured') == '0' ? 'selected' : '' }}>Nee</option>
-                        </select>
-                    </div>
-
                     <!-- Technologieën -->
                     <div class="mb-6">
                         <label class="block text-lg font-semibold text-gray-700">Kies Technologieën</label>
